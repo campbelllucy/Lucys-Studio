@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Lucy's Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: oversized wordmark, full-bleed hero, then an index list whose rows open into photo strips on hover. */
+:root {
+  --bg: #ffffff;
+  --fg: #121212;
+  --muted: #8a8a85;
+  --line: #e8e8e4;
+  --ink: #121212;      /* hovered row */
+  --on-ink: #ffffff;
+  --sans: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg:#101010; --fg:#f0f0ec; --muted:#86867f; --line:#262624; --ink:#f0f0ec; --on-ink:#101010; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg:#101010; --fg:#f0f0ec; --muted:#86867f; --line:#262624; --ink:#f0f0ec; --on-ink:#101010; color-scheme: dark; }
+
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--sans); font-size: 11px; line-height: 1.4; letter-spacing: .02em; text-transform: uppercase;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a, button { color: inherit; text-decoration: none; font: inherit; letter-spacing: inherit; text-transform: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+a:hover { opacity: .55; }
+:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
+.wrap { max-width: 1240px; margin-inline: auto; }
+
+/* Top bar */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 20px; }
+.top .right { display: flex; align-items: center; gap: 28px; }
+.burger { width: 22px; height: 10px; display: grid; align-content: space-between; }
+.burger i { display: block; height: 1px; background: currentColor; }
+
+.mark { font-weight: 500; font-size: clamp(54px, 12.5vw, 168px); line-height: .9; letter-spacing: -.045em; margin: 28px 0 24px; text-wrap: balance; }
+.sub { display: grid; grid-template-columns: 1fr 2fr auto; gap: 12px 32px; padding-bottom: 22px; }
+.sub nav { display: flex; flex-wrap: wrap; gap: 6px 28px; justify-content: flex-end; }
+
+.hero { position: relative; aspect-ratio: 16 / 7.5; max-width: 100%; overflow: hidden; background: #ccc; }
+.hero svg, .ph svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* Works index */
+.section-head { display: flex; justify-content: space-between; padding: 72px 0 14px; border-bottom: 1px solid var(--line); }
+.works { list-style: none; margin: 0; padding: 0; }
+.row { border-bottom: 1px solid var(--line); }
+.row > a {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px;
+  padding: 0 18px; min-height: 76px; transition: background .3s, color .3s, min-height .45s cubic-bezier(.2,.8,.2,1);
+}
+.row > a:hover { opacity: 1; }
+.row .name { font-size: clamp(18px, 2.2vw, 26px); font-weight: 500; letter-spacing: -.01em; }
+.row .blurb { display: block; font-size: 11px; max-height: 0; opacity: 0; overflow: hidden; transition: max-height .4s, opacity .3s; text-transform: none; letter-spacing: 0; font-size: 13px; }
+.row .cat { font-size: 10px; }
+.thumbs { display: flex; gap: 8px; align-items: center; }
+.thumb { position: relative; width: 0; height: 56px; overflow: hidden; opacity: 0; transition: width .45s cubic-bezier(.2,.8,.2,1), height .45s cubic-bezier(.2,.8,.2,1), opacity .3s; }
+.right-col { display: flex; align-items: center; gap: 28px; }
+
+.row:hover > a, .row > a:focus-visible { background: var(--ink); color: var(--on-ink); min-height: 150px; }
+.row:hover .blurb, .row > a:focus-visible .blurb { max-height: 3em; opacity: .8; margin-top: 6px; }
+.row:hover .thumb, .row > a:focus-visible .thumb { width: 84px; height: 84px; opacity: 1; }
+.row:hover .thumb:hover { width: 150px; height: 120px; }
+
+.statement { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 90px 0 30px; }
+.statement h2 { margin: 0; font-weight: 500; font-size: clamp(26px, 3.4vw, 44px); line-height: 1; letter-spacing: -.025em; text-wrap: balance; }
+.statement p { margin: 0; max-width: 44ch; font-size: 14px; line-height: 1.6; text-transform: none; letter-spacing: 0; }
+
+footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 60px 0 24px; border-top: 1px solid var(--line); margin-top: 60px; }
+
+/* Detail */
+.detail h1, .page h1 { font-weight: 500; font-size: clamp(34px, 6vw, 76px); line-height: .95; letter-spacing: -.035em; margin: 26px 0 30px; text-wrap: balance; }
+.detail-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.ph { position: relative; overflow: hidden; background: #ccc; max-width: 100%; }
+.ph.main { aspect-ratio: 4 / 3; animation: rise .7s cubic-bezier(.2,.8,.2,1); }
+@keyframes rise { from { transform: translateY(14px); opacity: .3; } }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.pair .ph { aspect-ratio: 1; transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+.pair .ph:hover { transform: scale(1.08); z-index: 2; }
+.d-info { display: grid; gap: 18px; min-width: 0; }
+.d-info h3 { margin: 0; font-weight: 500; font-size: 22px; letter-spacing: -.01em; }
+.d-info p { margin: 0; font-size: 14px; line-height: 1.6; text-transform: none; letter-spacing: 0; max-width: 44ch; }
+.meta { display: grid; grid-template-columns: auto 1fr; gap: 6px 28px; border-top: 1px solid var(--line); padding-top: 14px; }
+.meta dt { color: var(--muted); } .meta dd { margin: 0; }
+.pager { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 14px; }
+
+.page .body { max-width: 52ch; font-size: 15px; line-height: 1.6; text-transform: none; letter-spacing: 0; }
+
+/* Menu overlay */
+.menu { position: fixed; inset: 0; z-index: 20; background: var(--bg); overflow-y: auto;
+  padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(16px, env(safe-area-inset-left, 0px)); }
+.menu-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; padding: 40px 0 36px; }
+.menu ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.menu ol a { display: flex; align-items: baseline; gap: 10px; font-size: clamp(30px, 4.6vw, 54px); font-weight: 500; letter-spacing: -.03em; line-height: 1.05; }
+.menu ol a span { color: var(--muted); font-weight: 400; font-size: .6em; width: 1.6em; }
+.menu ol a:hover { opacity: 1; padding-left: 10px; transition: padding .3s; }
+.menu dl { margin: 0; display: grid; gap: 4px 0; align-content: start; }
+.menu dt { color: var(--muted); margin-top: 14px; }
+.menu dd { margin: 0; }
+.menu .ph { aspect-ratio: 16 / 6; }
+
+@media (max-width: 760px) {
+  .sub { grid-template-columns: 1fr; }
+  .sub nav { justify-content: flex-start; }
+  .top .right .gt { display: none; }
+  .hero { aspect-ratio: 4 / 3; }
+  .row > a { padding: 14px 12px; }
+  .row .cat { display: none; }
+  .row:hover > a { min-height: 76px; }
+  .row:hover .thumb { width: 48px; height: 48px; }
+  .row:hover .thumb:hover { width: 48px; height: 48px; }
+  .statement, .detail-grid, .menu-grid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a href="#">Lucy's Studio</a>
+    <div class="right">
+      <a class="gt" href="#contact">Get in touch</a>
+      <button class="burger" id="open-menu" aria-label="Open menu" aria-expanded="false"><i></i><i></i></button>
+    </div>
+  </header>
+
+  <main>
+    <section id="home">
+      <h1 class="mark">LUCY'S STUDIO</h1>
+      <div class="sub">
+        <span>Lucy Campbell</span>
+        <span>Based in Melbourne. Brand, story and image making.</span>
+        <nav>
+          <a href="#resume">Resume</a><a href="#about">About</a><a href="#contact">Contact</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </nav>
+      </div>
+      <div class="hero" id="hero"></div>
+
+      <div class="section-head"><span>Featured works</span><span id="count"></span></div>
+      <ul class="works" id="works"></ul>
+
+      <div class="statement">
+        <h2>STORIES WORTH STOPPING FOR</h2>
+        <p>A placeholder statement. Two or three lines on what you make, how you work and who you like working with. Swap this for your own words.</p>
+      </div>
+    </section>
+
+    <section id="detail" class="detail" hidden>
+      <h1 id="d-title"></h1>
+      <div class="detail-grid">
+        <div>
+          <div class="ph main" id="d-main"></div>
+          <div class="pair"><div class="ph" id="d-a"></div><div class="ph" id="d-b"></div></div>
+        </div>
+        <div class="d-info">
+          <span id="d-num"></span>
+          <h3 id="d-head"></h3>
+          <p id="d-text"></p>
+          <dl class="meta">
+            <dt>Year</dt><dd id="d-year"></dd>
+            <dt>Type</dt><dd id="d-type"></dd>
+            <dt>Place</dt><dd id="d-place"></dd>
+          </dl>
+          <div class="pager"><a id="d-prev" href="#">← Prev</a><a href="#">All works</a><a id="d-next" href="#">Next →</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page" class="page" hidden>
+      <h1 id="p-title"></h1>
+      <div class="body" id="p-text"></div>
+    </section>
+  </main>
+
+  <footer>
+    <span>©2026 Lucy's Studio</span>
+    <span>Melbourne, Australia</span>
+    <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn ↗</a>
+  </footer>
+</div>
+
+<div class="menu" id="menu" hidden>
+  <div class="wrap">
+    <header class="top">
+      <span>Lucy's Studio</span>
+      <button id="close-menu">Close ✕</button>
+    </header>
+    <div class="menu-grid">
+      <ol>
+        <li><a href="#"><span>01</span>HOME</a></li>
+        <li><a href="#resume"><span>02</span>RESUME</a></li>
+        <li><a href="#about"><span>03</span>ABOUT</a></li>
+        <li><a href="#contact"><span>04</span>CONTACT</a></li>
+      </ol>
+      <dl>
+        <dt>Location</dt><dd>Melbourne, Australia</dd>
+        <dt>Email</dt><dd>lucy@yourstudio.com</dd>
+        <dt>Follow</dt><dd><a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn ↗</a></dd>
+      </dl>
+    </div>
+    <div class="ph" id="menu-img"></div>
+  </div>
+</div>
+
+<script>
+// Placeholder work. Swap names, text and images for your own.
+const works = [
+  { t: "Porto", cat: "Brand identity", s: "A seaside cafe, a new name and a look to match.", y: 2026, place: "Melbourne", pal: ["#c9b9a0","#7d93a6","#e8dcc6"] },
+  { t: "Fragments", cat: "Portrait series", s: "Twelve faces, one window, one afternoon.", y: 2026, place: "Richmond", pal: ["#8b8b86","#e2b45a","#c9a98a"] },
+  { t: "Low Tide", cat: "Campaign", s: "Summer launch shot on the Mornington coast.", y: 2025, place: "Sorrento", pal: ["#9fb6c4","#d8cdb3","#6f8a5b"] },
+  { t: "Verandah", cat: "Editorial", s: "Timber, morning light and a slow breakfast.", y: 2025, place: "Daylesford", pal: ["#b48a5b","#e7dcc4","#5d6b4a"] },
+  { t: "White Coat", cat: "Garment", s: "A hand-sewn coat, photographed in the studio.", y: 2024, place: "Carlton", pal: ["#e7e5df","#2a2a28","#a7a49b"] },
+];
+const extra = ["Add a sentence on the brief.", "Add a sentence on what you made and who you made it with.", "Add a sentence on the result."];
+
+// Soft photographic placeholder: blurred colour fields + grain.
+let uid = 0;
+function photo(pal, seed = 0, hero = false) {
+  const id = "p" + (uid++), r = n => { seed = (seed * 9301 + 49297) % 233280; return (seed / 233280) * n; };
+  const [a, b, c] = pal;
+  const blobs = Array.from({ length: hero ? 7 : 4 }, (_, k) =>
+    `<ellipse cx="${r(100)}" cy="${r(60)}" rx="${18 + r(30)}" ry="${10 + r(20)}" fill="${[a,b,c][k % 3]}" opacity="${.55 + r(.4)}"/>`).join("");
+  return `<svg viewBox="0 0 100 60" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>
+      <filter id="${id}b" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+      <filter id="${id}n"><feTurbulence type="fractalNoise" baseFrequency="2.2" numOctaves="2" seed="${seed % 50}"/><feColorMatrix values="0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .22 0"/></filter>
+    </defs>
+    <rect width="100" height="60" fill="url(#${id}g)"/>
+    <g filter="url(#${id}b)">${blobs}</g>
+    <rect width="100" height="60" filter="url(#${id}n)"/>
+  </svg>`;
+}
+
+const pad = n => String(n).padStart(2, "0");
+const slug = i => "work-" + pad(i + 1);
+const $ = id => document.getElementById(id);
+
+$("hero").innerHTML = photo(["#6f8f4e", "#c9cf8a", "#e9e2c6"], 7, true);
+$("menu-img").innerHTML = photo(["#5f8a4a", "#8fb4c9", "#d9e3c4"], 21, true);
+$("count").textContent = "( " + pad(works.length) + " )";
+$("works").innerHTML = works.map((w, i) => `
+  <li class="row"><a href="#${slug(i)}">
+    <span><span class="name">${w.t.toUpperCase()}</span><span class="blurb">${w.s}</span></span>
+    <span class="right-col">
+      <span class="thumbs">${[0,1,2].map(k => `<span class="thumb">${photo([w.pal[k], w.pal[(k+1)%3], w.pal[(k+2)%3]], i * 10 + k + 3)}</span>`).join("")}</span>
+      <span class="cat">${w.cat}</span>
+    </span>
+  </a></li>`).join("");
+
+const pages = {
+  resume: { t: "Resume", x: "Add your experience, skills and a link to a PDF version here." },
+  about: { t: "About", x: "A short paragraph about you. What you make, who you make it with, and where you are based." },
+  contact: { t: "Get in touch", x: "Email: lucy@yourstudio.com<br>LinkedIn: add your profile link<br>Based in Melbourne, Australia." }
+};
+
+function route() {
+  closeMenu();
+  const h = location.hash.slice(1);
+  const i = works.findIndex((_, k) => slug(k) === h);
+  $("home").hidden = i >= 0 || !!pages[h];
+  $("detail").hidden = i < 0;
+  $("page").hidden = !pages[h];
+  if (i >= 0) {
+    const w = works[i];
+    $("d-title").textContent = w.t.toUpperCase();
+    $("d-main").innerHTML = photo(w.pal, i * 10 + 3);
+    $("d-a").innerHTML = photo([w.pal[1], w.pal[2], w.pal[0]], i * 10 + 4);
+    $("d-b").innerHTML = photo([w.pal[2], w.pal[0], w.pal[1]], i * 10 + 5);
+    $("d-num").textContent = "( " + pad(i + 1) + " ) " + w.cat;
+    $("d-head").textContent = w.s;
+    $("d-text").textContent = extra.join(" ");
+    $("d-year").textContent = w.y; $("d-type").textContent = w.cat; $("d-place").textContent = w.place;
+    $("d-prev").href = "#" + slug((i - 1 + works.length) % works.length);
+    $("d-next").href = "#" + slug((i + 1) % works.length);
+  }
+  if (pages[h]) { $("p-title").textContent = pages[h].t.toUpperCase(); $("p-text").innerHTML = pages[h].x; }
+  window.scrollTo(0, 0);
+}
+function openMenu() { $("menu").hidden = false; $("open-menu").setAttribute("aria-expanded", "true"); $("close-menu").focus(); }
+function closeMenu() { $("menu").hidden = true; $("open-menu").setAttribute("aria-expanded", "false"); }
+$("open-menu").addEventListener("click", openMenu);
+$("close-menu").addEventListener("click", closeMenu);
+$("menu").addEventListener("click", e => { if (e.target.closest("a[href^='#']")) { if (e.target.closest("a").getAttribute("href") === location.hash || (e.target.closest("a").getAttribute("href") === "#" && !location.hash)) closeMenu(); } });
+addEventListener("hashchange", route);
+addEventListener("keydown", e => { if (e.key === "Escape") { if (!$("menu").hidden) closeMenu(); else if (location.hash) location.hash = ""; } });
+route();
+</script>
+</body>
+</html>
